@@ -1,9 +1,9 @@
-# dependencies
 /node_modules
 
-# production build
-/build
+
 /distn
+/node_modules
+/build
 
 
 # misc
