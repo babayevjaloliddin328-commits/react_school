@@ -1,294 +1,293 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-export default function SchoolWebsite() {
-  const [activeSection, setActiveSection] = useState('home');
-  const [expandedHoliday, setExpandedHoliday] = useState(null);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [language, setLanguage] = useState('ru');
+function SchoolApp() {
+  const [loading, setLoading] = useState(true);
+  const [section, setSection] = useState('home');
+  const [darkMode, setDarkMode] = useState(false);
+  const [lang, setLang] = useState('ru');
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [statsExpanded, setStatsExpanded] = useState({});
-  const [achievementsCount, setAchievementsCount] = useState({ students: 0, teachers: 0, years: 0 });
+  const [expandedStats, setExpandedStats] = useState({});
+  const [expandedHoliday, setExpandedHoliday] = useState(null);
   const [showMap, setShowMap] = useState(false);
+  const [counts, setCounts] = useState({ s: 0, t: 0, y: 0 });
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
-    const duration = 2000;
-    const steps = 60;
-    const interval = duration / steps;
-    
-    let currentStep = 0;
+    // Loading animation
+    setTimeout(() => setLoading(false), 2500);
+  }, []);
+
+  useEffect(() => {
+    let step = 0;
     const timer = setInterval(() => {
-      currentStep++;
-      const progress = currentStep / steps;
-      
-      setAchievementsCount({
-        students: Math.floor(1024 * progress),
-        teachers: Math.floor(45 * progress),
-        years: Math.floor(30 * progress)
-      });
-      
-      if (currentStep >= steps) {
+      step++;
+      const p = step / 50;
+      setCounts({ s: Math.floor(1024 * p), t: Math.floor(45 * p), y: Math.floor(30 * p) });
+      if (step >= 50) {
         clearInterval(timer);
-        setAchievementsCount({ students: 1024, teachers: 45, years: 30 });
+        setCounts({ s: 1024, t: 45, y: 30 });
       }
-    }, interval);
-    
+    }, 30);
     return () => clearInterval(timer);
   }, []);
 
-  const toggleTheme = () => setIsDarkMode(!isDarkMode);
-  const toggleStats = (year) => {
-    setStatsExpanded(prev => ({ ...prev, [year]: !prev[year] }));
-  };
-
-  const translations = {
+  const txt = {
     ru: {
-      schoolName: "Школа №47 имени Алишера Навои",
+      title: "Школа №47 имени Алишера Навои",
       city: "г. Ташкент, Узбекистан",
-      nav: { home: "Главная", director: "Директор", teachers: "Учителя", stats: "Статистика", facilities: "Кабинеты", holidays: "Праздники", contact: "Контакты" },
-      welcome: "Добро пожаловать в нашу школу!",
+      nav: ["Главная", "Директор", "Учителя", "Статистика", "Кабинеты", "Праздники", "Контакты"],
+      welcome: "Добро пожаловать!",
       students: "Учеников",
       teachers: "Учителей",
-      yearsQuality: "Лет опыта",
-      showOnMap: "Показать на карте",
-      viewDetails: "Подробнее",
-      footer: { school: "Школа №47", address: "г. Ташкент, ул. Навои, 123", copyright: "© 2025 Все права защищены" }
+      years: "Лет опыта",
+      map: "Показать карту",
+      addr: "г. Ташкент, ул. Навои, 123",
+      phone: "+998 71 234-56-78",
+      email: "school47@edu.uz",
+      copy: "© 2026 Все права защищены"
     },
     uz: {
-      schoolName: "Alisher Navoiy nomidagi 47-maktab",
+      title: "Alisher Navoiy nomidagi 47-maktab",
       city: "Toshkent shahri",
-      nav: { home: "Bosh", director: "Direktor", teachers: "O'qituvchilar", stats: "Statistika", facilities: "Xonalar", holidays: "Bayramlar", contact: "Aloqa" },
-      welcome: "Maktabimizga xush kelibsiz!",
+      nav: ["Bosh", "Direktor", "O'qituvchilar", "Statistika", "Xonalar", "Bayramlar", "Aloqa"],
+      welcome: "Xush kelibsiz!",
       students: "O'quvchilar",
       teachers: "O'qituvchilar",
-      yearsQuality: "Yillik tajriba",
-      showOnMap: "Xaritada",
-      viewDetails: "Batafsil",
-      footer: { school: "47-maktab", address: "Toshkent, Navoiy ko'chasi, 123", copyright: "© 2025 Barcha huquqlar" }
+      years: "Yillik tajriba",
+      map: "Xaritada",
+      addr: "Toshkent, Navoiy ko'chasi, 123",
+      phone: "+998 71 234-56-78",
+      email: "school47@edu.uz",
+      copy: "© 2026 Barcha huquqlar"
     },
     en: {
-      schoolName: "School №47 Alisher Navoi",
+      title: "School №47 Alisher Navoi",
       city: "Tashkent, Uzbekistan",
-      nav: { home: "Home", director: "Director", teachers: "Teachers", stats: "Stats", facilities: "Facilities", holidays: "Holidays", contact: "Contact" },
-      welcome: "Welcome to our school!",
+      nav: ["Home", "Director", "Teachers", "Statistics", "Facilities", "Holidays", "Contact"],
+      welcome: "Welcome!",
       students: "Students",
       teachers: "Teachers",
-      yearsQuality: "Years experience",
-      showOnMap: "Show map",
-      viewDetails: "Details",
-      footer: { school: "School №47", address: "Tashkent, Navoi St, 123", copyright: "© 2025 All rights reserved" }
+      years: "Years",
+      map: "Show map",
+      addr: "Tashkent, Navoi St, 123",
+      phone: "+998 71 234-56-78",
+      email: "school47@edu.uz",
+      copy: "© 2026 All rights"
     }
-  };
-
-  const t = translations[language];
+  }[lang];
 
   const teachers = [
-    { name: "Нодира Рахимова", subject: "Математика", exp: "15 лет", rating: "4.9", img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400" },
-    { name: "Азиз Каримов", subject: "Информатика", exp: "10 лет", rating: "4.8", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400" },
-    { name: "Малика Усманова", subject: "Английский", exp: "12 лет", rating: "5.0", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400" },
-    { name: "Шахзод Ахмедов", subject: "Физика", exp: "18 лет", rating: "4.9", img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400" },
-    { name: "Дилноза Турсунова", subject: "Химия", exp: "9 лет", rating: "4.7", img: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400" },
-    { name: "Жасур Набиев", subject: "Физкультура", exp: "14 лет", rating: "4.8", img: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=400" }
+    { n: "Нодира Рахимова", s: "Математика", r: "4.9", img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400" },
+    { n: "Азиз Каримов", s: "Информатика", r: "4.8", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400" },
+    { n: "Малика Усманова", s: "Английский", r: "5.0", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400" },
+    { n: "Шахзод Ахмедов", s: "Физика", r: "4.9", img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400" },
+    { n: "Дилноза Турсунова", s: "Химия", r: "4.7", img: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400" },
+    { n: "Жасур Набиев", s: "Физкультура", r: "4.8", img: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=400" }
   ];
 
   const stats = [
-    { year: "2020-2021", students: 845, growth: 0 },
-    { year: "2021-2022", students: 892, growth: 5.6 },
-    { year: "2022-2023", students: 934, growth: 4.7 },
-    { year: "2023-2024", students: 987, growth: 5.7 },
-    { year: "2024-2025", students: 1024, growth: 3.7 }
+    { y: "2020-2021", n: 845, g: 0 },
+    { y: "2021-2022", n: 892, g: 5.6 },
+    { y: "2022-2023", n: 934, g: 4.7 },
+    { y: "2023-2024", n: 987, g: 5.7 },
+    { y: "2024-2025", n: 1024, g: 3.7 }
   ];
 
   const facilities = [
-    { name: "Компьютерный класс", desc: "30 ПК", icon: "💻", img: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600" },
-    { name: "Столовая", desc: "200 мест", icon: "🍽️", img: "https://images.unsplash.com/photo-1567521464027-f127ff144326?w=600" },
-    { name: "Библиотека", desc: "15000+ книг", icon: "📚", img: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600" },
-    { name: "Спортзал", desc: "Современный", icon: "⚽", img: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600" }
+    { n: "Компьютерный класс", ic: "💻", img: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600" },
+    { n: "Столовая", ic: "🍽️", img: "https://images.unsplash.com/photo-1567521464027-f127ff144326?w=600" },
+    { n: "Библиотека", ic: "📚", img: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600" },
+    { n: "Спортзал", ic: "⚽", img: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600" }
   ];
 
   const holidays = [
-    { name: "Навруз", date: "21 марта", desc: "Праздник весны", img: "https://images.unsplash.com/photo-1523968098043-a29c0d6f1f28?w=600" },
-    { name: "День Независимости", date: "1 сентября", desc: "Главный праздник", img: "https://images.unsplash.com/photo-1528605105345-5344ea20e269?w=600" },
-    { name: "Рамазан Хайит", date: "По календарю", desc: "Религиозный праздник", img: "https://images.unsplash.com/photo-1587497098110-1f663e750782?w=600" }
+    { n: "Навруз", d: "21 марта", img: "https://images.unsplash.com/photo-1523968098043-a29c0d6f1f28?w=600" },
+    { n: "День Независимости", d: "1 сентября", img: "https://images.unsplash.com/photo-1528605105345-5344ea20e269?w=600" },
+    { n: "Рамазан Хайит", d: "По календарю", img: "https://images.unsplash.com/photo-1587497098110-1f663e750782?w=600" }
   ];
 
   return (
-    <div className={`school ${isDarkMode ? 'dark' : ''}`}>
-      <button className="theme-btn" onClick={toggleTheme}>{isDarkMode ? '☀️' : '🌙'}</button>
+    <>
+      {loading && (
+        <div className="loader-screen">
+          <div className="loader-content">
+            <div className="loader-logo">
+              <div className="loader-icon">🏫</div>
+              <div className="loader-rings">
+                <div className="ring"></div>
+                <div className="ring"></div>
+                <div className="ring"></div>
+              </div>
+            </div>
+            <h1 className="loader-title">{lang === 'ru' ? 'Школа №47' : lang === 'uz' ? '47-maktab' : 'School №47'}</h1>
+            <div className="loader-bar">
+              <div className="loader-progress"></div>
+            </div>
+            <p className="loader-text">{lang === 'ru' ? 'Загрузка...' : lang === 'uz' ? 'Yuklanmoqda...' : 'Loading...'}</p>
+          </div>
+        </div>
+      )}
       
-      <div className="lang-switch">
+      <div className={`app ${darkMode ? 'dark' : ''} ${loading ? 'hidden' : ''}`}>
+      <button className="theme-btn" onClick={() => setDarkMode(!darkMode)}>
+        {darkMode ? '☀️' : '🌙'}
+      </button>
+
+      <div className="lang-btns">
         {['ru', 'uz', 'en'].map(l => (
-          <button key={l} className={language === l ? 'active' : ''} onClick={() => setLanguage(l)}>
+          <button key={l} className={lang === l ? 'active' : ''} onClick={() => setLang(l)}>
             {l === 'ru' ? '🇷🇺' : l === 'uz' ? '🇺🇿' : '🇬🇧'}
           </button>
         ))}
       </div>
 
       <header className={scrolled ? 'scrolled' : ''}>
-        <div className="header-content">
-          <div className="logo">🏫 <span>{t.schoolName}</span></div>
-          <button className="menu-btn" onClick={() => setMenuOpen(!menuOpen)}>
+        <div className="hdr">
+          <div className="logo">🏫 {txt.title}</div>
+          <button className="burger" onClick={() => setMenuOpen(!menuOpen)}>
             <span></span><span></span><span></span>
           </button>
         </div>
       </header>
 
       <nav className={menuOpen ? 'open' : ''}>
-        {Object.keys(t.nav).map(s => (
-          <button key={s} className={activeSection === s ? 'active' : ''} onClick={() => { setActiveSection(s); setMenuOpen(false); }}>
-            {t.nav[s]}
+        {['home', 'director', 'teachers', 'stats', 'facilities', 'holidays', 'contact'].map((s, i) => (
+          <button key={s} className={section === s ? 'active' : ''} onClick={() => { setSection(s); setMenuOpen(false); }}>
+            {txt.nav[i]}
           </button>
         ))}
       </nav>
 
       <main>
-        {activeSection === 'home' && (
-          <div className="section">
-            <h2>{t.welcome}</h2>
-            
+        {section === 'home' && (
+          <div className="sec">
+            <h2>{txt.welcome}</h2>
             <div className="hero">
               <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200" alt="School" />
             </div>
-
-            <div className="stats-grid">
-              <div className="stat-card blue">
-                <div className="icon">👥</div>
-                <div className="num">{achievementsCount.students}</div>
-                <div className="label">{t.students}</div>
+            <div className="stats">
+              <div className="stat blue">
+                <div className="ic">👥</div>
+                <div className="num">{counts.s}</div>
+                <div className="lbl">{txt.students}</div>
               </div>
-              <div className="stat-card purple">
-                <div className="icon">📚</div>
-                <div className="num">{achievementsCount.teachers}</div>
-                <div className="label">{t.teachers}</div>
+              <div className="stat purple">
+                <div className="ic">📚</div>
+                <div className="num">{counts.t}</div>
+                <div className="lbl">{txt.teachers}</div>
               </div>
-              <div className="stat-card green">
-                <div className="icon">🏆</div>
-                <div className="num">{achievementsCount.years}+</div>
-                <div className="label">{t.yearsQuality}</div>
+              <div className="stat green">
+                <div className="ic">🏆</div>
+                <div className="num">{counts.y}+</div>
+                <div className="lbl">{txt.years}</div>
               </div>
             </div>
           </div>
         )}
 
-        {activeSection === 'director' && (
-          <div className="section">
+        {section === 'director' && (
+          <div className="sec">
             <h2>Директор</h2>
-            <div className="director-card">
+            <div className="dir">
               <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400" alt="Director" />
               <div>
                 <h3>Гулнора Алимова</h3>
-                <p>25 лет опыта</p>
+                <p>25 лет опыта в образовании</p>
               </div>
             </div>
           </div>
         )}
 
-        {activeSection === 'teachers' && (
-          <div className="section">
+        {section === 'teachers' && (
+          <div className="sec">
             <h2>Наши учителя</h2>
-            <div className="teachers-grid">
+            <div className="teachers">
               {teachers.map((t, i) => (
-                <div key={i} className="teacher-card">
-                  <img src={t.img} alt={t.name} />
-                  <h3>{t.name}</h3>
-                  <p className="subject">{t.subject}</p>
-                  <div className="rating">⭐ {t.rating}</div>
+                <div key={i} className="tcard">
+                  <img src={t.img} alt={t.n} />
+                  <h3>{t.n}</h3>
+                  <p>{t.s}</p>
+                  <div className="rating">⭐ {t.r}</div>
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        {activeSection === 'stats' && (
-          <div className="section">
+        {section === 'stats' && (
+          <div className="sec">
             <h2>Статистика</h2>
-            {stats.map((s, i) => (
-              <div key={i} className={`stat-year ${statsExpanded[s.year] ? 'open' : ''}`} onClick={() => toggleStats(s.year)}>
-                <div className="stat-header">
-                  <span>{s.year}</span>
-                  <span className="big-num">{s.students}</span>
-                  <button>{statsExpanded[s.year] ? '▼' : '▶'}</button>
+            {stats.map((st, i) => (
+              <div key={i} className={`syear ${expandedStats[st.y] ? 'open' : ''}`} onClick={() => setExpandedStats(p => ({ ...p, [st.y]: !p[st.y] }))}>
+                <div className="shdr">
+                  <span>{st.y}</span>
+                  <span className="big">{st.n}</span>
+                  <button>{expandedStats[st.y] ? '▼' : '▶'}</button>
                 </div>
-                <div className="progress"><div style={{width: `${s.students/11}%`}}></div></div>
-                {statsExpanded[s.year] && (
-                  <div className="details">
-                    <p>Рост: +{s.growth}%</p>
-                    <p>Мальчики: {Math.round(s.students * 0.52)}</p>
-                    <p>Девочки: {Math.round(s.students * 0.48)}</p>
+                <div className="prog"><div style={{ width: `${st.n / 11}%` }}></div></div>
+                {expandedStats[st.y] && (
+                  <div className="det">
+                    <p>Рост: +{st.g}%</p>
+                    <p>Мальчики: {Math.round(st.n * 0.52)}</p>
+                    <p>Девочки: {Math.round(st.n * 0.48)}</p>
                   </div>
                 )}
               </div>
             ))}
-            <div className="growth-card">
+            <div className="grow">
               <h3>📈 Рост за 5 лет</h3>
-              <div className="big">+179</div>
-              <div className="big">+21%</div>
+              <div className="gnum">+179</div>
+              <div className="gnum">+21%</div>
             </div>
           </div>
         )}
 
-        {activeSection === 'facilities' && (
-          <div className="section">
+        {section === 'facilities' && (
+          <div className="sec">
             <h2>Кабинеты</h2>
-            <div className="facilities-grid">
+            <div className="facs">
               {facilities.map((f, i) => (
-                <div key={i} className="facility-card">
-                  <img src={f.img} alt={f.name} />
-                  <div className="icon-big">{f.icon}</div>
-                  <h3>{f.name}</h3>
-                  <p>{f.desc}</p>
+                <div key={i} className="fcard">
+                  <img src={f.img} alt={f.n} />
+                  <div className="fic">{f.ic}</div>
+                  <h3>{f.n}</h3>
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        {activeSection === 'holidays' && (
-          <div className="section">
+        {section === 'holidays' && (
+          <div className="sec">
             <h2>Праздники</h2>
             {holidays.map((h, i) => (
-              <div key={i} className="holiday-card" onClick={() => setExpandedHoliday(expandedHoliday === i ? null : i)}>
-                <img src={h.img} alt={h.name} />
-                <div className="holiday-info">
-                  <h3>{h.name}</h3>
-                  <p className="date">{h.date}</p>
-                  {expandedHoliday === i && <p className="desc">{h.desc}</p>}
+              <div key={i} className="hcard" onClick={() => setExpandedHoliday(expandedHoliday === i ? null : i)}>
+                <img src={h.img} alt={h.n} />
+                <div className="hinfo">
+                  <h3>{h.n}</h3>
+                  <p>{h.d}</p>
+                  {expandedHoliday === i && <p className="hdesc">Традиционный праздник</p>}
                 </div>
               </div>
             ))}
           </div>
         )}
 
-        {activeSection === 'contact' && (
-          <div className="section">
+        {section === 'contact' && (
+          <div className="sec">
             <h2>Контакты</h2>
-            <div className="contact-grid">
-              <div className="contact-info">
-                <div className="contact-item">
-                  <span>📍</span>
-                  <p>{t.footer.address}</p>
-                </div>
-                <div className="contact-item">
-                  <span>📞</span>
-                  <p>+998 71 234-56-78</p>
-                </div>
-                <div className="contact-item">
-                  <span>📧</span>
-                  <p>school47@edu.uz</p>
-                </div>
-                <button onClick={() => setShowMap(!showMap)} className="map-btn">
-                  🗺️ {t.showOnMap}
-                </button>
-              </div>
+            <div className="cont">
+              <div className="citem"><span>📍</span><p>{txt.addr}</p></div>
+              <div className="citem"><span>📞</span><p>{txt.phone}</p></div>
+              <div className="citem"><span>📧</span><p>{txt.email}</p></div>
+              <button className="mbtn" onClick={() => setShowMap(!showMap)}>🗺️ {txt.map}</button>
               {showMap && (
                 <div className="map">
                   <iframe
@@ -307,11 +306,14 @@ export default function SchoolWebsite() {
       </main>
 
       <footer>
-        <p>{t.footer.school}</p>
-        <p>{t.footer.copyright}</p>
+        <p>{txt.title}</p>
+        <p>{txt.copy}</p>
       </footer>
 
-      {scrolled && <button className="scroll-top" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>↑</button>}
+      {scrolled && <button className="top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>↑</button>}
     </div>
+    </>
   );
 }
+
+export default SchoolApp;
