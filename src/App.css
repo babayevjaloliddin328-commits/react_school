@@ -1,8 +1,9 @@
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;overflow-x:hidden}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;overflow-x:hidden}
 
 /* Loading Screen */
 .loader-screen{position:fixed;top:0;left:0;width:100%;height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;align-items:center;justify-content:center;z-index:9999;animation:fadeOut 0.5s 2s forwards}
-@keyframes fadeOut{to{opacity:0;visibility: hidden;}}
+@keyframes fadeOut{to{opacity:0;visibility:hidden;}}
 .loader-content{text-align:center;animation:scaleIn 0.8s ease-out}
 @keyframes scaleIn{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
 .loader-logo{position:relative;width:200px;height:200px;margin:0 auto 30px}
@@ -28,39 +29,252 @@
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @keyframes shimmer{0%{background-position:-1000px 0}100%{background-position:1000px 0}}
 
-.app{min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);transition:all .5s;animation:fade 0.5s;padding-top:80px}
+.app{min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);transition:all .5s;animation:fade 0.5s;padding-top:90px}
 .app.dark{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%)}
 
-.theme-btn{position:fixed;top:20px;right:20px;z-index:1001;width:60px;height:60px;border-radius:50%;border:none;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);font-size:1.8rem;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:float 3s ease-in-out infinite;transition:all .3s}
+/* Header — всегда фиксированный */
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  width:100%;
+  z-index:1000;
+  background:rgba(255,255,255,.1);
+  backdrop-filter:blur(20px);
+  padding:15px 0;
+  transition:all .3s;
+  animation:fade .8s;
+}
+
+header.scrolled{
+  background:rgba(255,255,255,.95);
+  box-shadow:0 5px 20px rgba(0,0,0,.1);
+  padding:12px 0;
+}
+
+.dark header{background:rgba(26,26,46,.2)}
+.dark header.scrolled{background:rgba(26,26,46,.95)}
+
+.hdr{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:relative;
+}
+
+.logo{
+  font-size:1.3rem;
+  font-weight:bold;
+  color:white;
+  transition:all .3s;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+header.scrolled .logo{color:#333}
+.dark header.scrolled .logo{color:white}
+
+/* Theme & Lang buttons — теперь видны на десктопе */
+.theme-btn{
+  position:fixed;
+  top:20px;
+  right:20px;
+  z-index:1001;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  border:none;
+  background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);
+  font-size:1.8rem;
+  cursor:pointer;
+  box-shadow:0 10px 30px rgba(0,0,0,.3);
+  animation:float 3s ease-in-out infinite;
+  transition:all .3s;
+}
+
 .theme-btn:hover{transform:scale(1.1) rotate(180deg)}
 .dark .theme-btn{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%)}
 
-.lang-btns{position:fixed;top:100px;left:20px;z-index:1001;display:flex;flex-direction:column;gap:10px;background:rgba(255,255,255,.2);backdrop-filter:blur(10px);padding:10px;border-radius:25px;animation:slide .8s}
-.lang-btns button{width:50px;height:50px;border-radius:50%;border:none;background:transparent;font-size:1.5rem;cursor:pointer;transition:all .3s}
+.lang-btns{
+  position:fixed;
+  top:100px;
+  left:20px;
+  z-index:1001;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:rgba(255,255,255,.2);
+  backdrop-filter:blur(10px);
+  padding:10px;
+  border-radius:25px;
+  animation:slide .8s;
+}
+
+.lang-btns button{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  border:none;
+  background:transparent;
+  font-size:1.5rem;
+  cursor:pointer;
+  transition:all .3s;
+}
+
 .lang-btns button:hover{transform:scale(1.2)}
 .lang-btns button.active{background:rgba(255,255,255,.5);box-shadow:0 5px 15px rgba(0,0,0,.2)}
 
-header{background:rgba(255,255,255,.1);backdrop-filter:blur(20px);padding:20px 0;position:fixed;top:0;left:0;right:0;width:100%;z-index:1000;transition:all .3s;animation:fade .8s}
-header.scrolled{background:rgba(255,255,255,.95);box-shadow:0 5px 20px rgba(0,0,0,.1)}
-.dark header{background:rgba(26,26,46,.2)}
-.dark header.scrolled{background:rgba(26,26,46,.95)}
-.hdr{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:1.3rem;font-weight:bold;color:white;transition:all .3s;display:flex;align-items:center;gap:10px}
-header.scrolled .logo{color:#333}
-.dark header.scrolled .logo{color:white}
-.burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer}
-.burger span{width:30px;height:3px;background:white;transition:all .3s}
+/* Burger — desktop hidden, mobile shown */
+.burger{
+  display:none;
+  flex-direction:column;
+  gap:5px;
+  background:none;
+  border:none;
+  cursor:pointer;
+}
+
+.burger span{
+  width:28px;
+  height:3px;
+  background:white;
+  transition:all .3s;
+}
+
 header.scrolled .burger span{background:#333}
 .dark header.scrolled .burger span{background:white}
 
-nav{display:flex;justify-content:center;gap:10px;padding:20px;background:rgba(255,255,255,.1);backdrop-filter:blur(10px);flex-wrap:wrap;animation:slide 1s;position:sticky;top:80px;z-index:99}
-nav button{padding:12px 30px;border-radius:50px;border:none;background:transparent;color:white;font-weight:600;cursor:pointer;transition:all .4s cubic-bezier(.68,-.55,.265,1.55);position:relative;overflow:hidden}
-nav button::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,.3);transform:translate(-50%,-50%);transition:width .6s,height .6s}
+/* Mobile adjustments for header elements */
+@media (max-width:768px){
+  .hdr{
+    flex-wrap:wrap;
+    gap:10px;
+    padding:12px 15px;
+  }
+  
+  .burger{display:flex}
+  
+  .logo{
+    font-size:1.1rem;
+    flex:1;
+  }
+  
+  /* Theme button inside header on mobile */
+  .theme-btn{
+    position:static;
+    width:44px;
+    height:44px;
+    font-size:1.4rem;
+    box-shadow:none;
+    margin-left:auto;
+  }
+  
+  /* Language buttons inside header on mobile */
+  .lang-btns{
+    position:static;
+    flex-direction:row;
+    background:none;
+    backdrop-filter:none;
+    padding:0;
+    border-radius:0;
+    gap:8px;
+    margin-right:10px;
+  }
+  
+  .lang-btns button{
+    width:40px;
+    height:40px;
+    font-size:1.2rem;
+    background:rgba(255,255,255,.15);
+    border-radius:50%;
+  }
+}
+
+/* Navigation */
+nav{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  padding:20px;
+  background:rgba(255,255,255,.1);
+  backdrop-filter:blur(10px);
+  flex-wrap:wrap;
+  animation:slide 1s;
+  position:relative;
+  z-index:999;
+}
+
+nav button{
+  padding:12px 30px;
+  border-radius:50px;
+  border:none;
+  background:transparent;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .4s cubic-bezier(.68,-.55,.265,1.55);
+  position:relative;
+  overflow:hidden;
+}
+
+nav button::before{
+  content:'';
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:0;
+  height:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.3);
+  transform:translate(-50%,-50%);
+  transition:width .6s,height .6s;
+}
+
 nav button:hover::before{width:300px;height:300px}
 nav button:hover{transform:translateY(-5px) scale(1.05)}
-nav button.active{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);box-shadow:0 10px 30px rgba(102,126,234,.4);transform:translateY(-3px)}
+nav button.active{
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  box-shadow:0 10px 30px rgba(102,126,234,.4);
+  transform:translateY(-3px);
+}
 .dark nav button.active{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%)}
 
+@media (max-width:768px){
+  nav{
+    position:fixed;
+    top:80px;
+    left:0;
+    right:0;
+    flex-direction:column;
+    gap:0;
+    padding:0;
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .4s ease;
+    background:rgba(26,26,46,.95);
+    backdrop-filter:blur(10px);
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+    z-index:998;
+  }
+  
+  nav.open{max-height:500px}
+  
+  nav button{
+    padding:18px 25px;
+    border-radius:0;
+    border-bottom:1px solid rgba(255,255,255,.1);
+    text-align:left;
+  }
+  
+  nav button:last-child{border-bottom:none}
+}
+
+/* Main content */
 main{max-width:1200px;margin:0 auto;padding:40px 20px}
 .sec{animation:fade .8s}
 .sec h2{font-size:3rem;color:white;text-align:center;margin-bottom:40px;position:relative}
@@ -157,22 +371,11 @@ footer p{margin:10px 0;font-size:1.1rem}
   .loader-icon{font-size:4rem}
   .loader-bar{width:250px}
   
-  .app{padding-top:140px}
-  
-  .theme-btn{width:50px;height:50px;font-size:1.5rem;top:15px;right:15px}
-  
-  .lang-btns{top:80px;left:15px;padding:8px}
-  .lang-btns button{width:45px;height:45px;font-size:1.3rem}
-  
-  .burger{display:flex}
-  nav{flex-direction:column;max-height:0;overflow:hidden;transition:max-height .5s;top:70px}
-  nav.open{max-height:500px}
-  .sec h2{font-size:2rem}
-  .hero{height:300px}
+  .sec h2{font-size:2.2rem}
+  .hero{height:240px}
   .stats,.teachers,.facs{grid-template-columns:1fr}
   .dir{flex-direction:column;text-align:center}
   .hcard{flex-direction:column}
   .hcard img{width:100%}
   .top{width:50px;height:50px;font-size:1.5rem;bottom:20px;right:20px}
-  .logo{font-size:1.1rem}
 }

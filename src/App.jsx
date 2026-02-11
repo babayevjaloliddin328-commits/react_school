@@ -108,9 +108,9 @@ function SchoolApp() {
   ];
 
   const holidays = [
-    { n: "Навруз", d: "21 марта", img: "https://images.unsplash.com/photo-1523968098043-a29c0d6f1f28?w=600" },
+    { n: "Навруз", d: "21 марта", img: "https://rnu.uz/wp-content/uploads/2025/07/happy-navruz-2025-1184x542.png" },
     { n: "День Независимости", d: "1 сентября", img: "https://images.unsplash.com/photo-1528605105345-5344ea20e269?w=600" },
-    { n: "Рамазан Хайит", d: "По календарю", img: "https://images.unsplash.com/photo-1587497098110-1f663e750782?w=600" }
+    { n: "Рамазан Хайит", d: "По календарю", img: "https://compassmall.uz/wp-content/uploads/ramadan-hait-vmeste-s-trc-compass-v-chest-okonchanija-svjashhennogo.jpg" }
   ];
 
   return (
