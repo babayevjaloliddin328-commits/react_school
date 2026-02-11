@@ -76,7 +76,7 @@ function SchoolApp() {
       teachers: "Teachers",
       years: "Years",
       map: "Show map",
-      addr: "Tashkent, Navoi St, 123",
+      addr: "Tashkent, Navoiy St, 123",
       phone: "+998 71 234-56-78",
       email: "school47@edu.uz",
       copy: "© 2026 All rights"
@@ -297,6 +297,7 @@ function SchoolApp() {
                     style={{ border: 0 }}
                     allowFullScreen
                     loading="lazy"
+                    title="Карта расположения школы №47 имени Алишера Навои в Ташкенте"
                   ></iframe>
                 </div>
               )}
